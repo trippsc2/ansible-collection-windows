@@ -1,0 +1,13 @@
+---
+- name: Ensure 'xDhcpServer' PowerShell module is installed
+  community.windows.win_psmodule:
+    name: xDhcpServer
+    accept_license: true
+    state: present
+
+- name: Install DHCP Server feature
+  ansible.windows.win_feature:
+    name:
+      - DHCP
+    include_management_tools: true
+    state: present

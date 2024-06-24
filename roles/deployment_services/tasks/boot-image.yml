@@ -1,0 +1,17 @@
+---
+- name: Wait for boot image
+  when:
+    - wds_wait_for_file
+  ansible.windows.win_wait_for:
+    path: "{{ _wds_boot_image.path }}"
+    timeout: "{{ wds_wait_for_file_timeout }}"
+
+- name: Configure WDS Boot Image
+  ansible.windows.win_dsc:
+    resource_name: WdsBootImage
+    NewImageName: "{{ _wds_boot_image.name }}"
+    Path: "{{ _wds_boot_image.path }}"
+    Multicast: "{{ _wds_boot_image.multicast | default(omit) }}"
+    Ensure: Present
+    PSDSCRunAsCredential_username: "{{ domain_admin_user }}"
+    PSDSCRunAsCredential_password: "{{ domain_admin_password }}"

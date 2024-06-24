@@ -1,0 +1,63 @@
+---
+argument_specs:
+  main:
+    short_description: Windows Deployment Services
+    description:
+      - This role installs and configures Windows Deployment Services role on Windows Server.
+    author: Jim Tarpley
+    options:
+      wds_path:
+        type: path
+        required: true
+        description:
+          - The path to initialize WDS.
+      wds_dhcp_authorized:
+        type: bool
+        required: false
+        description:
+          - Whether to authorize WDS in Active Directory.
+      wds_wait_for_file:
+        type: bool
+        required: false
+        description:
+          - Whether to wait for file replication to complete to configure the boot image file.
+      wds_wait_for_file_timeout:
+        type: int
+        required: false
+        default: 300
+        description:
+          - The timeout in seconds to wait for file replication to complete.
+      domain_admin_user:
+        type: str
+        required: true
+        description:
+          - The domain admin username.
+      domain_admin_password:
+        type: str
+        required: true
+        no_log: true
+        description:
+          - The domain admin password.
+      wds_boot_images:
+        type: list
+        required: false
+        default: []
+        elements: dict
+        description:
+          - List of boot images to configure.
+        options:
+          name:
+            type: str
+            required: true
+            description:
+              - The name of the boot image.
+          path:
+            type: path
+            required: true
+            description:
+              - The path to the boot image.
+          multicast:
+            type: bool
+            required: false
+            description:
+              - Whether to enable multicast for the boot image.

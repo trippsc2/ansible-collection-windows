@@ -1,0 +1,25 @@
+---
+- name: Configure DHCP scope
+  ansible.windows.win_dsc:
+    resource_name: xDhcpServerScope
+    Ensure: "{{ scope.ensure | default('Present') }}"
+    ScopeId: "{{ scope.id }}"
+    IPStartRange: "{{ scope.ip_start }}"
+    IPEndRange: "{{ scope.ip_end }}"
+    Name: "{{ scope.name }}"
+    SubnetMask: "{{ scope.subnet_mask }}"
+    LeaseDuration: "{{ scope.lease_duration }}"
+    State: "{{ scope.active | default('Active') }}"
+    AddressFamily: IPv4
+
+- name: Configure DHCP scope options
+  loop: "{{ scope.options | default([]) }}"
+  ansible.windows.win_dsc:
+    resource_name: DhcpScopeOptionValue
+    ScopeId: "{{ scope.id }}"
+    OptionId: "{{ item.id }}"
+    Value: "{{ item.value }}"
+    VendorClass: "{{ item.vendor_class | default('') }}"
+    UserClass: "{{ item.user_class | default('') }}"
+    AddressFamily: IPv4
+    Ensure: "{{ item.ensure | default('Present') }}"

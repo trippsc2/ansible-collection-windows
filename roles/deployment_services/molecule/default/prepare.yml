@@ -1,0 +1,30 @@
+---
+- name: Prepare DC
+  hosts:
+    - dc
+  roles:
+    - role: trippsc2.ad.testing_domain_controller
+
+- name: Prepare member server
+  hosts:
+    - windows_domain_members
+  gather_facts: false
+  roles:
+    - role: trippsc2.ad.testing_domain_member
+  tasks:
+    - name: Copy ISO to temp folder
+      ansible.windows.win_get_url:
+        url: https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66749/17763.3650.221105-1748.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso
+        dest: C:\Windows\temp\win.iso
+    
+    - name: Mount ISO
+      community.windows.win_disk_image:
+        image_path: C:\Windows\temp\win.iso
+        state: present
+      register: _iso_mount
+
+    - name: Copy boot.wim to temp folder
+      ansible.windows.win_copy:
+        src: "{{ _iso_mount.mount_paths[0] }}sources\\boot.wim"
+        dest: C:\Windows\temp\boot.wim
+        remote_src: true

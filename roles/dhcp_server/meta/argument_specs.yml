@@ -1,0 +1,138 @@
+---
+argument_specs:
+  main:
+    short_description: Windows Deployment Services
+    description:
+      - This role installs and configures DHCP Server role on Windows Server.
+    author: Jim Tarpley
+    options:
+      dhcp_options:
+        type: list
+        required: false
+        default: []
+        elements: dict
+        description:
+          - List of DHCP server options to configure.
+        options:
+          id:
+            type: int
+            required: true
+            description:
+              - The ID of the DHCP server option.
+          value:
+            type: raw
+            required: true
+            description:
+              - The value of the DHCP server option.
+          vendor_class:
+            type: str
+            required: false
+            description:
+              - The vendor class of the DHCP server option.
+          user_class:
+            type: str
+            required: false
+            description:
+              - The user class of the DHCP server option.
+          ensure:
+            type: str
+            required: false
+            default: Present
+            choices:
+              - Present
+              - Absent
+            description:
+              - The state of the DHCP server option.
+      dhcp_scopes:
+        type: list
+        required: false
+        default: []
+        elements: dict
+        description:
+          - List of DHCP scopes to configure.
+        options:
+          ensure:
+            type: str
+            required: false
+            default: Present
+            choices:
+              - Present
+              - Absent
+            description:
+              - The state of the DHCP scope.
+          id:
+            type: str
+            required: true
+            description:
+              - The ID of the DHCP scope.
+          ip_start:
+            type: str
+            required: true
+            description:
+              - The start IP address of the DHCP scope.
+          ip_end:
+            type: str
+            required: true
+            description:
+              - The end IP address of the DHCP scope.
+          name:
+            type: str
+            required: true
+            description:
+              - The name of the DHCP scope.
+          subnet_mask:
+            type: str
+            required: true
+            description:
+              - The subnet mask of the DHCP scope.
+          lease_duration:
+            type: str
+            required: true
+            description:
+              - The lease duration of the DHCP scope.
+          active:
+            type: str
+            required: false
+            default: Active
+            choices:
+              - Active
+              - Inactive
+            description:
+              - The state of the DHCP scope.
+          options:
+            type: list
+            required: false
+            default: []
+            elements: dict
+            description:
+              - List of DHCP scope options to configure.
+            options:
+              id:
+                type: int
+                required: true
+                description:
+                  - The ID of the DHCP scope option.
+              value:
+                type: raw
+                required: true
+                description:
+                  - The value of the DHCP scope option.
+              vendor_class:
+                type: str
+                required: false
+                description:
+                  - The vendor class of the DHCP scope option.
+              user_class:
+                type: str
+                required: false
+                description:
+                  - The user class of the DHCP scope option.
+              ensure:
+                type: str
+                required: false
+                default: Present
+                choices:
+                  - Present
+                  - Absent
+                description:
+                  - The state of the DHCP scope option.

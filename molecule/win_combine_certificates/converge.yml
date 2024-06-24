@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts:
+    - all
+  gather_facts: false
+  tasks:
+    - name: Combine certificates
+      trippsc2.windows.win_combine_certificates:
+        certificates:
+          - C:\Windows\Temp\winca.pem
+          - C:\Windows\Temp\dc.pem
+        path: C:\Windows\Temp\combined.pem

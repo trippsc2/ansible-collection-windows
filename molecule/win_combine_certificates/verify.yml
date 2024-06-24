@@ -1,0 +1,31 @@
+---
+- name: Verify
+  hosts:
+    - all
+  gather_facts: false
+  tasks:
+    - name: Get content of winca.pem
+      ansible.builtin.slurp:
+        src: C:\Windows\Temp\winca.pem
+      register: _winca_content
+
+    - name: Get content of dc.pem
+      ansible.builtin.slurp:
+        src: C:\Windows\Temp\dc.pem
+      register: _dc_content
+
+    - name: Combine certificates
+      ansible.builtin.set_fact:
+        _combined_cert: "{{ _winca_content.content | b64decode }}\n{{ _dc_content.content | b64decode }}"
+
+    - name: Get content of combined.pem
+      ansible.builtin.slurp:
+        src: C:\Windows\Temp\combined.pem
+      register: _combined_content
+
+    - name: Assert combined.pem is equal to winca.pem + dc.pem
+      ansible.builtin.assert:
+        that:
+          - _combined_cert == _combined_content.content | b64decode
+        fail_msg: "Combined certificate is not equal to winca.pem + dc.pem"
+        success_msg: "Combined certificate is equal to winca.pem + dc.pem"

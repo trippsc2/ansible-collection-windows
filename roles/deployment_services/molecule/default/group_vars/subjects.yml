@@ -1,0 +1,5 @@
+---
+wds_path: C:\RemoteInstall
+wds_boot_images:
+  - name: Test
+    path: C:\Windows\temp\boot.wim

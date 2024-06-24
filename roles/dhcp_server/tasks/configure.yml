@@ -1,0 +1,17 @@
+---
+- name: Configure DHCP Server Option
+  loop: "{{ dhcp_options }}"
+  ansible.windows.win_dsc:
+    resource_name: DhcpServerOptionValue
+    OptionId: "{{ item.id }}"
+    Value: "{{ item.value }}"
+    VendorClass: "{{ item.vendor_class | default('') }}"
+    UserClass: "{{ item.user_class | default('') }}"
+    AddressFamily: IPv4
+    Ensure: "{{ item.ensure | default('Present') }}"
+
+- name: Create DHCP scope
+  loop: "{{ dhcp_scopes }}"
+  ansible.builtin.include_tasks: scope.yml
+  loop_control:
+    loop_var: scope

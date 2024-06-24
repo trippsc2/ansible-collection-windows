@@ -1,0 +1,6 @@
+---
+- name: Prepare DC
+  hosts:
+    - subjects
+  gather_facts: false
+  tasks: []

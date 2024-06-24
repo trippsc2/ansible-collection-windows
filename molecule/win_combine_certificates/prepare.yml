@@ -1,0 +1,14 @@
+- name: Prepare
+  hosts:
+    - all
+  gather_facts: false
+  tasks:
+    - name: Copy files
+      loop:
+        - src: files/winca.pem
+          dest: C:\Windows\Temp\winca.pem
+        - src: files/dc.pem
+          dest: C:\Windows\Temp\dc.pem
+      ansible.windows.win_copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
