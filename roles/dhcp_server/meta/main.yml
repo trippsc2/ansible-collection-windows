@@ -16,7 +16,6 @@ galaxy_info:
 
 collections:
   - ansible.windows
-  - community.windows
 
 dependencies:
   - trippsc2.windows.install_psgallery

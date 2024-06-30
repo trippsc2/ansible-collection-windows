@@ -1,7 +1,7 @@
 ---
 namespace: trippsc2
 name: windows
-version: 1.0.0
+version: 1.0.1
 readme: README.md
 authors:
   - Jim Tarpley
@@ -11,7 +11,9 @@ license_file: 'LICENSE'
 
 tags: []
 
-dependencies: {}
+dependencies:
+  ansible.windows: '>=1.0.0'
+  community.windows: '>=1.11.0'
 
 repository: https://github.com/trippsc2/ansible-collection-windows.git
 

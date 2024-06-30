@@ -12,16 +12,52 @@ platforms:
     box: jtarpley/w2022_cis
     memory: 2048
     cpus: 2
+    groups:
+      - windows
+      - windows_domain
   - name: win
     box: jtarpley/${MOLECULE_BOX:-w2022_cis}
     memory: 2048
     cpus: 2
+    groups:
+      - subjects
+      - windows
+      - windows_domain
+      - windows_domain_members
 provisioner:
   name: ansible
   inventory:
-    links:
-      hosts: ./hosts
-      host_vars: ./host_vars/
-      group_vars: ./group_vars/
+    group_vars:
+      subjects:
+        dhcp_options:
+          - id: 6
+            value:
+              - "{{ hostvars['dc'].ansible_host }}"
+          - id: 15
+            value: test.loc
+        dhcp_scopes:
+          - id: '192.168.121.0'
+            ip_start: '192.168.121.11'
+            ip_end: '192.168.121.250'
+            name: '192.168.121.0'
+            subnet_mask: '255.255.255.0'
+            lease_duration: '00:01:00'
+            options:
+              - id: 6
+                value:
+                  - "{{ hostvars['dc'].ansible_host }}"
+      windows:
+        ansible_shell_type: powershell
+        ansible_become_method: runas
+        ansible_become_user: SYSTEM
+        domain_admin_user: TEST\vagrant
+        domain_admin_password: vagrant
+    host_vars:
+      dc:
+        dhcp_authorize_servers:
+          - dns_name: win.test.loc
+            ip_address: "{{ hostvars['win'].ansible_host }}"
+      win:
+        ansible_user: TEST\vagrant
 verifier:
   name: ansible
