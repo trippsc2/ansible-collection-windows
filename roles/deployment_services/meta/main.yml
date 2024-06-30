@@ -19,4 +19,4 @@ collections:
   - community.windows
 
 dependencies:
-  - trippsc2.windows.install_psgallery
+  - role: trippsc2.windows.install_psgallery

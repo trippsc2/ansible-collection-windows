@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.windows.dhcp_server
-Version: 1.0.0
+Version: 1.0.2
 
 This role installs and configures DHCP Server role on Windows Server.
 
@@ -14,12 +14,11 @@ This role installs and configures DHCP Server role on Windows Server.
 ## Dependencies
 | Role |
 | ---- |
-|  |
+| trippsc2.windows.install_psgallery |
 
 | Collection |
 | ---------- |
 | ansible.windows |
-| community.windows |
 
 ## Role Arguments
 |Option|Description|Type|Required|Choices|Default|

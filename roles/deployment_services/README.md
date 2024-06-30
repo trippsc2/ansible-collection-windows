@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.windows.deployment_services
-Version: 1.0.0
+Version: 1.0.2
 
 This role installs and configures Windows Deployment Services role on Windows Server.
 
@@ -14,7 +14,7 @@ This role installs and configures Windows Deployment Services role on Windows Se
 ## Dependencies
 | Role |
 | ---- |
-|  |
+| trippsc2.windows.install_psgallery |
 
 | Collection |
 | ---------- |
