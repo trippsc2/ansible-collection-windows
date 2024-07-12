@@ -11,6 +11,57 @@
 - name: Validate Windows Server
   ansible.builtin.assert:
     that:
-      - ansible_distribution | regex_search('(Microsoft Windows Server)')
+      - '"Windows Server" in ansible_distribution'
     fail_msg: This role only supports Windows Server.
     success_msg: This role supports Windows Server.
+
+- name: Validate WDS path is not a valid local path
+  ansible.builtin.assert:
+    that:
+      - wds_path | regex_search('^[a-zA-Z]:')
+    fail_msg: The WDS path must be a valid local path.
+    success_msg: The WDS path is a valid local path syntax.
+
+- name: Check that WDS path drive exists
+  ansible.windows.win_powershell:
+    script: |
+      [CmdletBinding()]
+      param (
+        [string]$DriveLetter
+      )
+
+      $Ansible.Changed = $false
+
+      try {
+        $drive = Get-PSDrive -Name $DriveLetter
+
+        if ($drive.Root.StartsWith($DriveLetter)) {
+          $Ansible.Result = $true
+        }
+        else {
+          $Ansible.Result = $false
+        }
+      }
+      catch { 
+        $Ansible.Result = $false
+        Write-Debug $_
+      }
+    parameters:
+      DriveLetter: "{{ wds_path | win_splitdrive | first | regex_search('^[a-zA-Z]') }}"
+  register: _wds_drive_exists
+
+- name: Validate that WDS path drive exists
+  ansible.builtin.assert:
+    that:
+      - _wds_drive_exists.result
+    fail_msg: The Windows Deployment Services folder path must be on an existing local drive.
+    success_msg: The Windows Deployment Services folder path is on an existing local drive.
+
+- name: Validate timeout for boot image replication
+  when:
+    - wds_wait_for_file
+  ansible.builtin.assert:
+    that:
+      - wds_wait_for_file_timeout >= 1
+    fail_msg: The timeout for boot image replication must be greater than or equal to 1.
+    success_msg: The timeout for boot image replication is valid.

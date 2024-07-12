@@ -6,8 +6,8 @@
     IsSingleInstance: 'Yes'
     Path: "{{ wds_path }}"
     Authorized: "{{ wds_dhcp_authorized | default(omit) }}"
-    PSDSCRunAsCredential_username: "{{ domain_admin_user }}"
-    PSDSCRunAsCredential_password: "{{ domain_admin_password }}"
+    PSDSCRunAsCredential_username: "{{ wds_admin_user }}"
+    PSDSCRunAsCredential_password: "{{ wds_admin_password }}"
 
 - name: Configure boot image
   loop: "{{ wds_boot_images }}"

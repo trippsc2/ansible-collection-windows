@@ -1,0 +1,32 @@
+---
+- name: Gather OS facts
+  when:
+    - ansible_distribution is not defined
+  ansible.builtin.setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - distribution
+
+- name: Validate Windows Server
+  ansible.builtin.assert:
+    that:
+      - ansible_distribution | regex_search('(Microsoft Windows Server)')
+    fail_msg: This role only supports Windows Server.
+    success_msg: This role supports Windows Server.
+
+- name: Validate DHCP server option value is defined
+  loop: "{{ dhcp_server_options }}"
+  when:
+    - item.ensure | default('Present') == 'Present'
+  ansible.builtin.assert:
+    that:
+      - item.value is defined
+    fail_msg: The value of the DHCP server option is required when 'ensure' is set to 'Present'.
+    success_msg: The value of the DHCP server option is defined.
+
+- name: Validate DHCP scope
+  loop: "{{ dhcp_scopes }}"
+  ansible.builtin.include_tasks: validate/scope.yml
+  loop_control:
+    loop_var: _dhcp_scope

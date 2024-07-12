@@ -2,5 +2,65 @@
 - name: Verify
   hosts:
     - subjects
-  gather_facts: false
-  tasks: []
+  tasks:
+    - name: Check if WDS is installed
+      check_mode: true
+      ansible.windows.win_feature:
+        name:
+          - WDS
+        state: present
+      register: _wds_installed
+
+    - name: Verify WDS is installed
+      ansible.builtin.assert:
+        that:
+          - not _wds_installed.changed
+        fail_msg: Windows Deployment Services is not installed.
+        success_msg: Windows Deployment Services is installed.
+
+    - name: Check if WDS service is running
+      check_mode: true
+      ansible.windows.win_service:
+        name: WDSServer
+        state: started
+      register: _wds_service_running
+
+    - name: Verify WDS service is running
+      ansible.builtin.assert:
+        that:
+          - not _wds_service_running.changed
+        fail_msg: Windows Deployment Services service is not running.
+        success_msg: Windows Deployment Services service is running.
+
+    - name: Check if WDS boot image exists
+      loop: "{{ wds_boot_images }}"
+      become: true
+      ansible.windows.win_powershell:
+        script: |
+          [CmdletBinding()]
+          param(
+              [String]
+              $ImageName
+          )
+
+          $Ansible.Changed = $false
+
+          $bootImages = ([Array](Get-WdsBootImage -ImageName $ImageName))
+
+          if ($bootImages -eq $null -or $bootImages.Count -eq 0) {
+              $Ansible.Result = @{ name = $ImageName; exists = $false }
+              return
+          }
+
+          $Ansible.Result = @{ name = $ImageName; exists = $true }
+        parameters:
+          ImageName: "{{ item.name }}"
+      register: _boot_image_exists
+
+    - name: Verify WDS boot image exists
+      loop: "{{ _boot_image_exists.results }}"
+      ansible.builtin.assert:
+        that:
+          - item.result.exists
+        fail_msg: WDS boot image '{{ item.result.name }}' does not exist.
+        success_msg: WDS boot image '{{ item.result.name }}' exists.

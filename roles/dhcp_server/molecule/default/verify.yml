@@ -2,5 +2,91 @@
 - name: Verify
   hosts:
     - subjects
-  gather_facts: false
-  tasks: []
+  tasks:
+    - name: Check if DHCP server option is configured
+      loop: "{{ dhcp_options | default([]) }}"
+      when:
+        - item.ensure | default('Present') == 'Present'
+      ansible.windows.win_powershell:
+        script: |
+          [CmdletBinding()]
+          param(
+              [String]
+              $OptionId,
+              [object]
+              $Value,
+              [String]
+              $VendorClass,
+              [String]
+              $UserClass
+          )
+
+          $Ansible.Changed = $false
+
+          $option = ([Array](Get-DhcpServerv4OptionValue -OptionId $OptionId))
+
+          if ($option -eq $null -or $option.Count -ne 1) {
+              $Ansible.Result = @{ option_id = $OptionId; exists = $false; }
+              return
+          }
+
+          $Ansible.Result = @{ option_id = $OptionId; exists = $true; vendor_class = $VendorClass; user_class = $UserClass; option = $option[0] }
+        parameters:
+          OptionId: "{{ item.id }}"
+          Value: "{{ item.value }}"
+          VendorClass: "{{ item.vendor_class | default('') }}"
+          UserClass: "{{ item.user_class | default('') }}"
+      register: _dhcp_option_configured
+
+    - name: Verify DHCP server option exists
+      loop: "{{ _dhcp_option_configured.results }}"
+      ansible.builtin.assert:
+        that:
+          - item.result.exists
+        fail_msg: DHCP server option does not exist.
+        success_msg: DHCP server option exists.
+      loop_control:
+        label: "{{ item.result.option_id }}"
+
+    - name: Verify that DHCP server option has correct value
+      loop: "{{ _dhcp_option_configured.results }}"
+      when:
+        - item.result.exists
+      ansible.builtin.assert:
+        that:
+          - item.result.option.Value == item.option.value
+        fail_msg: DHCP server option has incorrect value.
+        success_msg: DHCP server option has correct value.
+      loop_control:
+        label: "{{ item.result.option_id }}"
+
+    - name: Verify that DHCP server option has correct vendor class
+      loop: "{{ _dhcp_option_configured.results }}"
+      when:
+        - item.result.vendor_class != ''
+      ansible.builtin.assert:
+        that:
+          - item.result.option.VendorClass == item.result.vendor_class
+        fail_msg: DHCP server option has incorrect vendor class.
+        success_msg: DHCP server option has correct vendor class.
+      loop_control:
+        label: "{{ item.result.option_id }}"
+
+    - name: Verify that DHCP server option has correct user class
+      loop: "{{ _dhcp_option_configured.results }}"
+      when:
+        - item.result.user_class != ''
+      ansible.builtin.assert:
+        that:
+          - item.result.option.UserClass == item.result.user_class
+        fail_msg: DHCP server option has incorrect user class.
+        success_msg: DHCP server option has correct user class.
+      loop_control:
+        label: "{{ item.result.option_id }}"
+
+    - name: Verify DHCP scopes
+      loop: "{{ dhcp_scopes | default([]) }}"
+      ansible.builtin.include_tasks: verify/scope.yml
+      loop_control:
+        loop_var: _dhcp_scope
+        label: "{{ _dhcp_scope.id }}"

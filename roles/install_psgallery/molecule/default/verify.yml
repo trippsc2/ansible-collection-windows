@@ -2,5 +2,68 @@
 - name: Verify
   hosts:
     - subjects
-  gather_facts: false
-  tasks: []
+  tasks:
+    - name: Check if NuGet package provider is installed
+      ansible.windows.win_powershell:
+        script: |
+          $Ansible.Changed = $false
+          $packageProvider = ([Array](Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue))
+
+          if ($null -eq $packageProvider -or $packageProvider.Count -eq 0) {
+            $Ansible.Result = $false
+          }
+
+          $Ansible.Result = $packageProvider.Version -ge '2.8.5.201'
+      register: _nuget_package_provider
+
+    - name: Verify NuGet module is installed
+      ansible.builtin.assert:
+        that:
+          - _nuget_package_provider.result
+        fail_msg: NuGet package provider is not installed or is not the correct version.
+        success_msg: NuGet package provider is installed and is the correct version.
+
+    - name: Check if PowerShellGet PowerShell module is installed and updated
+      check_mode: true
+      community.windows.win_psmodule:
+        name: PowerShellGet
+        accept_license: true
+        state: latest
+      register: _powershellget_module
+    
+    - name: Verify PowerShellGet module is installed and updated
+      ansible.builtin.assert:
+        that:
+          - not _powershellget_module.changed
+        fail_msg: PowerShellGet module is not installed or is not the latest version.
+        success_msg: PowerShellGet module is installed and is the latest version.
+
+    - name: Check if PackageManagement PowerShell module is installed and updated
+      check_mode: true
+      community.windows.win_psmodule:
+        name: PackageManagement
+        accept_license: true
+        state: latest
+      register: _packagemanagement_module
+    
+    - name: Verify PackageManagement module is installed and updated
+      ansible.builtin.assert:
+        that:
+          - not _packagemanagement_module.changed
+        fail_msg: PackageManagement module is not installed or is not the latest version.
+        success_msg: PackageManagement module is installed and is the latest version.
+
+    - name: Check if PSGallery PowerShell repository is enabled and trusted
+      check_mode: true
+      community.windows.win_psrepository:
+        name: PSGallery
+        installation_policy: trusted
+        state: present
+      register: _psgallery_repository
+
+    - name: Verify PSGallery repository is enabled and trusted
+      ansible.builtin.assert:
+        that:
+          - not _psgallery_repository.changed
+        fail_msg: PSGallery repository is not enabled or is not trusted.
+        success_msg: PSGallery repository is enabled and is trusted.

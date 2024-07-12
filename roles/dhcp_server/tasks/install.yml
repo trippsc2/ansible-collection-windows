@@ -9,5 +9,5 @@
   ansible.windows.win_feature:
     name:
       - DHCP
-    include_management_tools: true
+    include_management_tools: "{{ dhcp_install_management_tools }}"
     state: present

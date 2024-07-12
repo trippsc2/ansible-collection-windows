@@ -29,6 +29,8 @@ provisioner:
   inventory:
     group_vars:
       subjects:
+        wds_admin_user: TEST\vagrant
+        wds_admin_password: vagrant
         wds_path: C:\RemoteInstall
         wds_boot_images:
           - name: Test
@@ -37,8 +39,6 @@ provisioner:
         ansible_shell_type: powershell
         ansible_become_method: runas
         ansible_become_user: SYSTEM
-        domain_admin_user: TEST\vagrant
-        domain_admin_password: vagrant
     host_vars:
       win:
         ansible_user: TEST\vagrant

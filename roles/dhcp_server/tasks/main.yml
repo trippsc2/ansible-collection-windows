@@ -1,6 +1,6 @@
 ---
 - name: Validate
-  ansible.builtin.include_tasks: validate.yml
+  ansible.builtin.include_tasks: validate/main.yml
 
 - name: Install Windows roles/features and PowerShell DSC
   ansible.builtin.import_tasks: install.yml

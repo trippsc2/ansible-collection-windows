@@ -1,4 +1,7 @@
 ---
+- name: Validate
+  ansible.builtin.import_tasks: validate.yml
+
 - name: Ensure the required NuGet package provider version is installed
   trippsc2.windows.win_package_provider:
     name: NuGet

@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.windows.dhcp_server
-Version: 1.0.2
+Version: 1.0.3
 
 This role installs and configures DHCP Server role on Windows Server.
 
@@ -23,14 +23,15 @@ This role installs and configures DHCP Server role on Windows Server.
 ## Role Arguments
 |Option|Description|Type|Required|Choices|Default|
 |---|---|---|---|---|---|
-| dhcp_options | <p>List of DHCP server options to configure.</p> | list of dicts of 'dhcp_options' options | no |  |  |
+| dhcp_install_management_tools | <p>Whether to install the DHCP Server management tools.</p> | bool | no |  | false |
+| dhcp_server_options | <p>List of DHCP server options.</p> | list of dicts of 'dhcp_server_options' options | no |  |  |
 | dhcp_scopes | <p>List of DHCP scopes to configure.</p> | list of dicts of 'dhcp_scopes' options | no |  |  |
 
-### Options for dhcp_options
+### Options for dhcp_server_options
 |Option|Description|Type|Required|Choices|Default|
 |---|---|---|---|---|---|
-| id | <p>The ID of the DHCP server option.</p> | int | yes |  |  |
-| value | <p>The value of the DHCP server option.</p> | raw | yes |  |  |
+| id | <p>The option ID of the DHCP server option.</p> | int | yes |  |  |
+| value | <p>The value of the DHCP server option.</p><p>If *ensure* is set to `Present`, this is required.</p> | raw | no |  |  |
 | vendor_class | <p>The vendor class of the DHCP server option.</p> | str | no |  |  |
 | user_class | <p>The user class of the DHCP server option.</p> | str | no |  |  |
 | ensure | <p>The state of the DHCP server option.</p> | str | no | <ul><li>Present</li><li>Absent</li></ul> | Present |
@@ -39,13 +40,13 @@ This role installs and configures DHCP Server role on Windows Server.
 |Option|Description|Type|Required|Choices|Default|
 |---|---|---|---|---|---|
 | ensure | <p>The state of the DHCP scope.</p> | str | no | <ul><li>Present</li><li>Absent</li></ul> | Present |
-| id | <p>The ID of the DHCP scope.</p> | str | yes |  |  |
+| id | <p>The network ID address of the DHCP scope.</p> | str | yes |  |  |
 | ip_start | <p>The start IP address of the DHCP scope.</p> | str | yes |  |  |
 | ip_end | <p>The end IP address of the DHCP scope.</p> | str | yes |  |  |
 | name | <p>The name of the DHCP scope.</p> | str | yes |  |  |
 | subnet_mask | <p>The subnet mask of the DHCP scope.</p> | str | yes |  |  |
 | lease_duration | <p>The lease duration of the DHCP scope.</p> | str | yes |  |  |
-| active | <p>The state of the DHCP scope.</p> | str | no | <ul><li>Active</li><li>Inactive</li></ul> | Active |
+| state | <p>The state of the DHCP scope.</p> | str | no | <ul><li>Active</li><li>Inactive</li></ul> | Active |
 | options | <p>List of DHCP scope options to configure.</p> | list of dicts of 'options' options | no |  |  |
 
 ### Options for dhcp_scopes > options

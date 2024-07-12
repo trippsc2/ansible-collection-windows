@@ -29,7 +29,7 @@ provisioner:
   inventory:
     group_vars:
       subjects:
-        dhcp_options:
+        dhcp_server_options:
           - id: 6
             value:
               - "{{ hostvars['dc'].ansible_host }}"

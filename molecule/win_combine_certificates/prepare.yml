@@ -1,6 +1,6 @@
 - name: Prepare
   hosts:
-    - all
+    - subjects
   gather_facts: false
   tasks:
     - name: Copy files

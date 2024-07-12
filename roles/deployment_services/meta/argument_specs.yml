@@ -6,38 +6,39 @@ argument_specs:
       - This role installs and configures Windows Deployment Services role on Windows Server.
     author: Jim Tarpley
     options:
+      wds_admin_user:
+        type: str
+        required: true
+        description:
+          - The user account used to configure Windows Deployment Services.
+          - This account must have administrative privileges on the server.
+          - If *wds_dhcp_authorized* is set to `true`, this account must also have Domain Admin privileges in Active Directory.
+      wds_admin_password:
+        type: str
+        required: true
+        description:
+          - The password for the *wds_admin_user* user account.
       wds_path:
         type: path
         required: true
         description:
-          - The path to initialize WDS.
+          - The path where Windows Deployment Services files will be stored.
       wds_dhcp_authorized:
         type: bool
         required: false
         description:
-          - Whether to authorize WDS in Active Directory.
+          - Whether to authorize the server as a DHCP Server in Active Directory.
       wds_wait_for_file:
         type: bool
         required: false
         description:
-          - Whether to wait for file replication to complete to configure the boot image file.
+          - Whether the role should wait for a missing boot image file to be replicated before continuing.
       wds_wait_for_file_timeout:
         type: int
         required: false
         default: 300
         description:
-          - The timeout in seconds to wait for file replication to complete.
-      domain_admin_user:
-        type: str
-        required: true
-        description:
-          - The domain admin username.
-      domain_admin_password:
-        type: str
-        required: true
-        no_log: true
-        description:
-          - The domain admin password.
+          - The timeout in seconds to wait for boot image file replication to complete.
       wds_boot_images:
         type: list
         required: false
@@ -50,12 +51,12 @@ argument_specs:
             type: str
             required: true
             description:
-              - The name of the boot image.
+              - The displayed name of the boot image in Windows Deployment Services.
           path:
             type: path
             required: true
             description:
-              - The path to the boot image.
+              - The path to the boot image to be imported.
           multicast:
             type: bool
             required: false

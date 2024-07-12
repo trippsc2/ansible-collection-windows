@@ -1,6 +1,6 @@
 ---
 - name: Configure DHCP Server Option
-  loop: "{{ dhcp_options }}"
+  loop: "{{ dhcp_server_options }}"
   ansible.windows.win_dsc:
     resource_name: DhcpServerOptionValue
     OptionId: "{{ item.id }}"
@@ -14,4 +14,4 @@
   loop: "{{ dhcp_scopes }}"
   ansible.builtin.include_tasks: scope.yml
   loop_control:
-    loop_var: scope
+    loop_var: _dhcp_scope

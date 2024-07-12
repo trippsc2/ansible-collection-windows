@@ -6,24 +6,31 @@ argument_specs:
       - This role installs and configures DHCP Server role on Windows Server.
     author: Jim Tarpley
     options:
-      dhcp_options:
+      dhcp_install_management_tools:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to install the DHCP Server management tools.
+      dhcp_server_options:
         type: list
         required: false
         default: []
         elements: dict
         description:
-          - List of DHCP server options to configure.
+          - List of DHCP server options.
         options:
           id:
             type: int
             required: true
             description:
-              - The ID of the DHCP server option.
+              - The option ID of the DHCP server option.
           value:
             type: raw
-            required: true
+            required: false
             description:
               - The value of the DHCP server option.
+              - If *ensure* is set to `Present`, this is required.
           vendor_class:
             type: str
             required: false
@@ -64,7 +71,7 @@ argument_specs:
             type: str
             required: true
             description:
-              - The ID of the DHCP scope.
+              - The network ID address of the DHCP scope.
           ip_start:
             type: str
             required: true
@@ -90,7 +97,7 @@ argument_specs:
             required: true
             description:
               - The lease duration of the DHCP scope.
-          active:
+          state:
             type: str
             required: false
             default: Active

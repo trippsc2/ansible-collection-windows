@@ -1,7 +1,7 @@
 ---
 - name: Verify
   hosts:
-    - all
+    - subjects
   gather_facts: false
   tasks:
     - name: Get content of winca.pem
@@ -23,9 +23,9 @@
         src: C:\Windows\Temp\combined.pem
       register: _combined_content
 
-    - name: Assert combined.pem is equal to winca.pem + dc.pem
+    - name: Verify combined.pem is equal to winca.pem + dc.pem
       ansible.builtin.assert:
         that:
           - _combined_cert == _combined_content.content | b64decode
-        fail_msg: "Combined certificate is not equal to winca.pem + dc.pem"
-        success_msg: "Combined certificate is equal to winca.pem + dc.pem"
+        fail_msg: Combined certificate is not equal to winca.pem + dc.pem.
+        success_msg: Combined certificate is equal to winca.pem + dc.pem.

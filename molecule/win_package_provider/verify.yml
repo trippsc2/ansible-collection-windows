@@ -1,17 +1,19 @@
 ---
 - name: Verify
   hosts:
-    - all
+    - subjects
   gather_facts: false
   tasks:
     - name: Ensure the required NuGet package provider version is installed
       check_mode: true
-      trippsc2.general.win_package_provider:
+      trippsc2.windows.win_package_provider:
         name: NuGet
         min_version: '2.8.5.201'
       register: _nuget_installed
 
-    - name: Assert
+    - name: Verify the required NuGet package provider version is installed
       ansible.builtin.assert:
         that:
           - not _nuget_installed.changed
+        fail_msg: The required NuGet package provider version is not installed.
+        success_msg: The required NuGet package provider version is installed.

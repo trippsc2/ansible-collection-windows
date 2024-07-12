@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts:
-    - all
+    - subjects
   gather_facts: false
   tasks:
     - name: Combine certificates

@@ -1,3 +1,5 @@
 ---
-dhcp_options: []
+dhcp_install_management_tools: true
+
+dhcp_server_options: []
 dhcp_scopes: []

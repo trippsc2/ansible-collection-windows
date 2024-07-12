@@ -12,6 +12,9 @@ platforms:
     box: jtarpley/${MOLECULE_BOX:-w2022_cis}
     memory: 2048
     cpus: 2
+    groups:
+      - subjects
+      - windows
 provisioner:
   name: ansible
   inventory:
