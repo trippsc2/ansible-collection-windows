@@ -12,6 +12,8 @@ platforms:
     box: jtarpley/${MOLECULE_BOX:-w2022_cis}
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: win_combine_certificates_
     groups:
       - subjects
       - windows
