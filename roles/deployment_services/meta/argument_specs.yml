@@ -16,6 +16,7 @@ argument_specs:
       wds_admin_password:
         type: str
         required: true
+        no_log: true
         description:
           - The password for the *wds_admin_user* user account.
       wds_path:
