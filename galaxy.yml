@@ -1,7 +1,7 @@
 ---
 namespace: trippsc2
 name: windows
-version: 1.0.6
+version: 1.0.7
 readme: README.md
 authors:
   - Jim Tarpley
@@ -9,7 +9,9 @@ description: This collection contains general purpose Windows modules and roles.
 
 license_file: 'LICENSE'
 
-tags: []
+tags:
+  - infrastructure
+  - windows
 
 dependencies:
   ansible.windows: '>=1.0.0'

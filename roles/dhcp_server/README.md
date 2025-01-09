@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.windows.dhcp_server
-Version: 1.0.6
+Version: 1.0.7
 
 This role installs and configures DHCP Server role on Windows Server.
 
@@ -23,9 +23,9 @@ This role installs and configures DHCP Server role on Windows Server.
 ## Role Arguments
 |Option|Description|Type|Required|Choices|Default|
 |---|---|---|---|---|---|
-| dhcp_install_management_tools | <p>Whether to install the DHCP Server management tools.</p> | bool | no |  | false |
-| dhcp_server_options | <p>List of DHCP server options.</p> | list of dicts of 'dhcp_server_options' options | no |  |  |
-| dhcp_scopes | <p>List of DHCP scopes to configure.</p> | list of dicts of 'dhcp_scopes' options | no |  |  |
+| dhcp_install_management_tools | <p>Whether to install the DHCP Server management tools.</p> | bool | no |  | False |
+| dhcp_server_options | <p>List of DHCP server options.</p> | list of dicts of 'dhcp_server_options' options | no |  | [] |
+| dhcp_scopes | <p>List of DHCP scopes to configure.</p> | list of dicts of 'dhcp_scopes' options | no |  | [] |
 
 ### Options for dhcp_server_options
 |Option|Description|Type|Required|Choices|Default|
@@ -47,7 +47,7 @@ This role installs and configures DHCP Server role on Windows Server.
 | subnet_mask | <p>The subnet mask of the DHCP scope.</p> | str | yes |  |  |
 | lease_duration | <p>The lease duration of the DHCP scope.</p> | str | yes |  |  |
 | state | <p>The state of the DHCP scope.</p> | str | no | <ul><li>Active</li><li>Inactive</li></ul> | Active |
-| options | <p>List of DHCP scope options to configure.</p> | list of dicts of 'options' options | no |  |  |
+| options | <p>List of DHCP scope options to configure.</p> | list of dicts of 'options' options | no |  | [] |
 
 ### Options for dhcp_scopes > options
 |Option|Description|Type|Required|Choices|Default|
