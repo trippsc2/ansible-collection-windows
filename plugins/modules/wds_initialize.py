@@ -69,4 +69,11 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
+reboot_required:
+  type: bool
+  returned:
+    - always
+  sample: false
+  description:
+    - Whether a reboot is required to apply the changes.
 """
