@@ -1,7 +1,0 @@
----
-wds_path: C:\RemoteInstall
-
-wds_wait_for_file: true
-wds_wait_for_file_timeout: 300
-
-wds_boot_images: []
