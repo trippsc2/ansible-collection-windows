@@ -8,15 +8,26 @@ driver:
   cachier: machine
   parallel: true
 platforms:
+  - name: dc
+    box: jtarpley/w2022_cis
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: wds_boot_image_
+    groups:
+      - windows
+      - windows_domain
   - name: win
     box: jtarpley/${MOLECULE_BOX:-w2022_cis}
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: win_combine_certificates_
+      default_prefix: wds_boot_image_
     groups:
       - subjects
       - windows
+      - windows_domain
+      - windows_domain_members
 provisioner:
   name: ansible
   inventory:
@@ -27,5 +38,23 @@ provisioner:
         ansible_become_user: SYSTEM
         ansible_password: vagrant
         ansible_ssh_common_args: '-o PreferredAuthentications=password -o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -o ForwardX11=no -o LogLevel=ERROR -o StrictHostKeyChecking=no'
+    host_vars:
+      win:
+        ansible_user: TEST\vagrant
 verifier:
   name: ansible
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    #- idempotence
+    # Removed idempotence check, because this scenario tests for idempotence implicitly.
+    - side_effect
+    - verify
+    - cleanup
+    - destroy

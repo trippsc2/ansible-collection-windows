@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2024-01-24
+
+### Collection
+
+- *wds_boot_image* module plugin added.
+- *wds_initialize* module plugin added.
+
+### Role - deployment_services
+
+- Removed boot images from the role to keep it idempotent. This functionality should be moved outside the role using the *wds_boot_image* module plugin.
+- Replaced WdsDsc resource for initializing the WDS server with *wds_initialize* module plugin.
+
 ## [1.0.7] - 2024-01-08
 
 ### Collection

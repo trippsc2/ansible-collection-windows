@@ -18,5 +18,4 @@ collections:
   - ansible.windows
   - community.windows
 
-dependencies:
-  - role: trippsc2.windows.install_psgallery
+dependencies: []

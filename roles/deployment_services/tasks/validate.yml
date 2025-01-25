@@ -11,7 +11,7 @@
 - name: Validate Windows Server
   ansible.builtin.assert:
     that:
-      - '"Windows Server" in ansible_distribution'
+      - ("Windows Server" in ansible_distribution)
     fail_msg: This role only supports Windows Server.
     success_msg: This role supports Windows Server.
 
@@ -56,12 +56,3 @@
       - _wds_drive_exists.result
     fail_msg: The Windows Deployment Services folder path must be on an existing local drive.
     success_msg: The Windows Deployment Services folder path is on an existing local drive.
-
-- name: Validate timeout for boot image replication
-  when:
-    - wds_wait_for_file
-  ansible.builtin.assert:
-    that:
-      - wds_wait_for_file_timeout >= 1
-    fail_msg: The timeout for boot image replication must be greater than or equal to 1.
-    success_msg: The timeout for boot image replication is valid.

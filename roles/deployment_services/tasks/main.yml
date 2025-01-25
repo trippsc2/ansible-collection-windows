@@ -4,6 +4,3 @@
 
 - name: Install DSC modules and feature
   ansible.builtin.import_tasks: install.yml
-
-- name: Configure WDS
-  ansible.builtin.import_tasks: configure.yml

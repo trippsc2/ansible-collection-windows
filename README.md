@@ -6,6 +6,8 @@ This collection contains general purpose Windows modules and roles.
 
 ### Module plugins
 
+- wds_boot_image - Configures a Windows Deployment Services boot image
+- wds_initialize - Configures Windows Deployment Services initial settings
 - win_combine_certificates - Combine multiple certificates into a single file.
 - win_package_provider - Ensures a package provider is available.
 

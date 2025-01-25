@@ -1,18 +1,15 @@
 ---
-- name: Ensure 'WDSDsc' PowerShell module is installed
-  community.windows.win_psmodule:
-    name: WDSDsc
-    accept_license: true
-    state: present
-
-- name: Replace 'WdsBootImage' resource to fix bug
-  ansible.windows.win_copy:
-    src: JHP_WdsBootImage.psm1
-    dest: C:\Program Files\WindowsPowerShell\Modules\WdsDsc\0.11.0\DscResources\JHP_WdsBootImage\
-
 - name: Install Windows Deployment Services feature
   ansible.windows.win_feature:
     name:
       - WDS
     include_management_tools: true
     state: present
+
+- name: Initialize WDS
+  throttle: 1
+  trippsc2.windows.wds_initialize:
+    remote_install_path: "{{ wds_path }}"
+    standalone: "{{ wds_standalone | default(omit) }}"
+    authorized: "{{ wds_dhcp_authorized | default(omit) }}"
+    state: initialized

@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts:
+    - subjects
+  gather_facts: false
+  tasks:
+    - name: Check WDS initialization
+      check_mode: true
+      trippsc2.windows.wds_initialize:
+        remote_install_path: C:\RemoteInstall
+        state: initialized
+
+    - name: Initialize WDS
+      trippsc2.windows.wds_initialize:
+        remote_install_path: C:\RemoteInstall
+        state: initialized
