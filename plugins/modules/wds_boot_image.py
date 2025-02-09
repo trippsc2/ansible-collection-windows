@@ -93,7 +93,7 @@ previous:
     - RV(changed=true)
   description:
     - The previous configuration of the boot image.
-  options:
+  contains:
     image_name:
       type: str
       description:
@@ -116,7 +116,7 @@ current:
     - O(state=present)
   description:
     - The current configuration of the boot image.
-  options:
+  contains:
     image_name:
       type: str
       description:
