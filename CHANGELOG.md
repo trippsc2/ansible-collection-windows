@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2024-02-09
+
+### wds_boot_image Module Plugin
+
+- Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
+
+### wds_initialize Module Plugin
+
+- Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
+
+### win_combine_certificates Module Plugin
+
+- Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
+
+### win_package_provider Module Plugin
+
+- Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
+
 ## [1.1.0] - 2024-01-25
 
 ### Collection

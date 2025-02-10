@@ -10,7 +10,7 @@ $spec = @{
             required = $true
         }
         path = @{
-            type = 'str'
+            type = 'path'
             required = $false
         }
         architecture = @{
@@ -60,38 +60,34 @@ $state = $module.Params['state']
 
 $module.Result["changed"] = $false
 
-$registryPath = Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\WDSServer\Providers\WDSTFTP" -ErrorAction Stop
+$registryPath = Get-ItemProperty -LiteralPath "HKLM:\SYSTEM\CurrentControlSet\Services\WDSServer\Providers\WDSTFTP" -ErrorAction Stop
 
-if ($null -eq $registryPath)
-{
+if ($null -eq $registryPath) {
     $module.FailJson("WDS is not installed.")
 }
 
-if ($state -eq 'present')
-{
-    if (-not (Test-Path -LiteralPath $path))
-    {
+if ($state -eq 'present') {
+
+    if (-not (Test-Path -LiteralPath $path)) {
         $module.FailJson("Path '$path' does not exist.")
     }
 
     $existingBootImage = Get-WdsBootImage -ImageName $imageName -ErrorAction SilentlyContinue
 
-    if ($null -eq $existingBootImage)
-    {
+    if ($null -eq $existingBootImage) {
+
         $module.Result["changed"] = $true
-        
-        if ($null -eq $description)
-        {
+
+        if ($null -eq $description) {
             $description = ''
         }
 
-        if ($null -eq $displayOrder)
-        {
+        if ($null -eq $displayOrder) {
             $displayOrder = 50000
         }
 
-        if ($null -eq $architecture)
-        {
+        if ($null -eq $architecture) {
+
             $bootImage = Import-WdsBootImage -NewImageName $imageName -Path $path -NewDescription $description -DisplayOrder $displayOrder
 
             $architecture = $bootImage.Architecture.ToString().ToLower()
@@ -103,51 +99,43 @@ if ($state -eq 'present')
                 display_order = $displayOrder
             }
         }
-        else
-        {
+        else {
+
             $module.Result["current"] = @{
                 image_name = $imageName
                 architecture = $architecture
                 description = $description
                 display_order = $displayOrder
             }
-            
+
             $bootImage = Import-WdsBootImage -NewImageName $imageName -Path $path -NewDescription $description -DisplayOrder $displayOrder
 
-            if ($architecture -ne $bootImage.Architecture.ToString().ToLower())
-            {
+            if ($architecture -ne $bootImage.Architecture.ToString().ToLower()) {
                 $module.FailJson("Cannot change architecture of existing boot image.")
             }
         }
     }
-    else
-    {
-        if ($null -eq $architecture)
-        {
+    else {
+        if ($null -eq $architecture) {
             $architecture = $existingBootImage.Architecture.ToString().ToLower()
         }
-        elseif ($architecture -ne $existingBootImage.Architecture.ToString().ToLower())
-        {
+        elseif ($architecture -ne $existingBootImage.Architecture.ToString().ToLower()) {
             $module.FailJson("Cannot change architecture of existing boot image.")
         }
 
         $propertyChanged = $false
 
-        if ($null -eq $description)
-        {
+        if ($null -eq $description) {
             $description = $existingBootImage.Description
         }
-        elseif ($description -ne $existingBootImage.Description)
-        {
+        elseif ($description -ne $existingBootImage.Description) {
             $propertyChanged = $true
         }
 
-        if ($null -eq $displayOrder)
-        {
+        if ($null -eq $displayOrder) {
             $displayOrder = $existingBootImage.DisplayOrder
         }
-        elseif ($displayOrder -ne $existingBootImage.DisplayOrder)
-        {
+        elseif ($displayOrder -ne $existingBootImage.DisplayOrder) {
             $propertyChanged = $true
         }
 
@@ -167,20 +155,22 @@ if ($state -eq 'present')
             display_order = $displayOrder
         }
 
-        if ($propertyChanged)
-        {
+        if ($propertyChanged) {
             Set-WdsBootImage -ImageName $imageName -Architecture $architecture -NewDescription $description -DisplayOrder $displayOrder | Out-Null
         }
 
-        Start-Process -FilePath "C:\Windows\System32\wdsutil.exe" -ArgumentList "/Replace-Image /Image:""$($imageName)"" /ImageType:Boot /Architecture:$($architecture) /ReplacementImage /ImageFile:""$($path)""" -Wait | Out-Null
+        Start-Process -FilePath "C:\Windows\System32\wdsutil.exe" `
+            -ArgumentList "/Replace-Image /Image:""$($imageName)"" /ImageType:Boot /Architecture:$($architecture) /ReplacementImage /ImageFile:""$($path)""" `
+            -Wait |
+            Out-Null
     }
 }
-elseif ($state -eq "absent")
-{
+elseif ($state -eq "absent") {
+
     $existingBootImage = Get-WdsBootImage -ImageName $imageName -ErrorAction SilentlyContinue
-    
-    if ($null -ne $existingBootImage)
-    {
+
+    if ($null -ne $existingBootImage) {
+
         $module.Result["changed"] = $true
 
         $module.Result["previous"] = @{

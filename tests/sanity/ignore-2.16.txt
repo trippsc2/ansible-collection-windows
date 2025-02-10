@@ -1,0 +1,8 @@
+plugins/modules/wds_boot_image.ps1 validate-modules:missing-gplv3-license
+plugins/modules/wds_boot_image.yml validate-modules:missing-gplv3-license
+plugins/modules/wds_initialize.ps1 validate-modules:missing-gplv3-license
+plugins/modules/wds_initialize.yml validate-modules:missing-gplv3-license
+plugins/modules/win_combine_certificates.ps1 validate-modules:missing-gplv3-license
+plugins/modules/win_combine_certificates.yml validate-modules:missing-gplv3-license
+plugins/modules/win_package_provider.ps1 validate-modules:missing-gplv3-license
+plugins/modules/win_package_provider.yml validate-modules:missing-gplv3-license

@@ -2,14 +2,11 @@ function Import-WDSModule {
     [CmdletBinding()]
     param ()
 
-    if (-not (Get-Module -Name WDS))
-    {
-        try
-        {
+    if (-not (Get-Module -Name WDS)) {
+        try {
             Import-Module -Name WDS | Out-Null
         }
-        catch
-        {
+        catch {
             $module.FailJson("Failed to import WDS module. Ensure the Windows Deployment Services management tools are installed.")
         }
     }

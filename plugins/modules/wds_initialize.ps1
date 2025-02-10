@@ -59,75 +59,64 @@ $isStandalone = $currentConfig.Output -match 'Standalone configuration:\s*yes'
 $module.Result["changed"] = $false
 $module.Result["reboot_required"] = $false
 
-if ($state -eq 'initialized')
-{
-    if (-not $isConfigured)
-    {
+if ($state -eq 'initialized') {
+
+    if (-not $isConfigured) {
         $module.Result["changed"] = $true
     }
 
-    if ($standalone -and -not $isStandalone)
-    {
+    if ($standalone -and -not $isStandalone) {
         $module.Result["changed"] = $true
     }
 
-    if (-not $standalone -and $isStandalone)
-    {
+    if (-not $standalone -and $isStandalone) {
         $module.Result["changed"] = $true
     }
 
-    if ($remoteInstallPath -ne $existingRemoteInstallPath)
-    {
+    if ($remoteInstallPath -ne $existingRemoteInstallPath) {
         $module.Result["changed"] = $true
     }
 
-    if ($module.Result["changed"] -and -not $module.CheckMode)
-    {
+    if ($module.Result["changed"] -and -not $module.CheckMode) {
+
         $argumentsList = New-Object System.Collections.ArrayList
 
         $argumentsList.Add("/Initialize-Server") | Out-Null
         $argumentsList.Add("/RemInst:$($remoteInstallPath)") | Out-Null
-        
-        if ($standalone)
-        {
+
+        if ($standalone) {
             $argumentsList.Add("/Standalone") | Out-Null
         }
 
-        if ($authorized)
-        {
+        if ($authorized) {
             $argumentsList.Add("/Authorize") | Out-Null
         }
 
         $result = Start-ProcessWithOutput -Path $wdsutilPath -ArgumentList $argumentsList.ToArray() -ErrorAction SilentlyContinue
 
-        if ($result.ExitCode -eq 3010)
-        {
+        if ($result.ExitCode -eq 3010) {
             $module.Result["reboot_required"] = $true
         }
-        elseif ($result.ExitCode -ne 0)
-        {
+        elseif ($result.ExitCode -ne 0) {
             $module.FailJson("Failed to initialize WDS. Exit code: $($result.ExitCode). Output: $($result.Output)")
         }
     }
 }
-elseif ($state -eq 'uninitialized')
-{
-    if ($isConfigured)
-    {
+elseif ($state -eq 'uninitialized') {
+    if ($isConfigured) {
+
         $module.Result["changed"] = $true
 
-        if (-not $module.CheckMode)
-        {
+        if (-not $module.CheckMode) {
+
             $result = Start-ProcessWithOutput -Path $wdsutilPath -ArgumentList @("/Uninitialize-Server") -ErrorAction SilentlyContinue | Out-Null
 
-            if ($result.ExitCode -eq 3010)
-            {
+            if ($result.ExitCode -eq 3010) {
                 $module.Result["reboot_required"] = $true
             }
-            elseif ($result.ExitCode -ne 0)
-            {
+            elseif ($result.ExitCode -ne 0) {
                 $module.FailJson("Failed to uninitialize WDS. Exit code: $($result.ExitCode). Output: $($result.Output)")
-            }   
+            }
         }
     }
 }

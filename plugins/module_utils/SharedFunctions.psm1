@@ -13,8 +13,7 @@ function Start-ProcessWithOutput {
     $processStartInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
     $processStartInfo.FileName = $Path
 
-    if ($null -ne $ArgumentList)
-    {
+    if ($null -ne $ArgumentList) {
         $processStartInfo.Arguments = $ArgumentList
     }
 
@@ -28,8 +27,7 @@ function Start-ProcessWithOutput {
     $standardError = $process.StandardError.ReadToEnd()
     $process.WaitForExit() | Out-Null
 
-    if ($process.ExitCode -notin $ExpectedExitCodes)
-    {
+    if ($process.ExitCode -notin $ExpectedExitCodes) {
         throw "$($process) exited with $($process.ExitCode), output: $($standardOutput), error: $($standardError)"
     }
 
