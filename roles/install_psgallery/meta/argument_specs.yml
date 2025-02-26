@@ -4,5 +4,5 @@ argument_specs:
     short_description: PSGallery
     description:
       - This role installs the PSGallery repository for PowerShell modules on Windows machines.
-    author: Jim Tarpley
+    author: Jim Tarpley (@trippsc2)
     options: {}

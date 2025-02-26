@@ -4,7 +4,7 @@ argument_specs:
     short_description: Windows Deployment Services
     description:
       - This role installs and configures DHCP Server role on Windows Server.
-    author: Jim Tarpley
+    author: Jim Tarpley (@trippsc2)
     options:
       dhcp_install_management_tools:
         type: bool
