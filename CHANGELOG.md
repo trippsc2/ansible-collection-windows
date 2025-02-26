@@ -4,37 +4,37 @@ All notable changes to this project will be documented in this file.
 
 ## [1.1.2] - 2024-02-09
 
-### wds_boot_image Module Plugin
+### Module Plugin - wds_boot_image
 
 - Reverted changing documentation from .py file to .yml file because ansible-lint does not parse it correctly yet.
 
-### wds_initialize Module Plugin
+### Module Plugin - wds_initialize
 
 - Reverted changing documentation from .py file to .yml file because ansible-lint does not parse it correctly yet.
 
-### win_combine_certificates Module Plugin
+### Module Plugin - win_combine_certificates
 
 - Reverted changing documentation from .py file to .yml file because ansible-lint does not parse it correctly yet.
 
-### win_package_provider Module Plugin
+### Module Plugin - win_package_provider
 
 - Reverted changing documentation from .py file to .yml file because ansible-lint does not parse it correctly yet.
 
 ## [1.1.1] - 2024-02-09
 
-### wds_boot_image Module Plugin
+### Module Plugin - wds_boot_image
 
 - Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
 
-### wds_initialize Module Plugin
+### Module Plugin - wds_initialize
 
 - Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
 
-### win_combine_certificates Module Plugin
+### Module Plugin - win_combine_certificates
 
 - Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
 
-### win_package_provider Module Plugin
+### Module Plugin - win_package_provider
 
 - Made several code quality and style changes to the module that were recommended by the Ansible sanity tests.
 
