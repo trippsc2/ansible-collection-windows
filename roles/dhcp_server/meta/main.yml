@@ -1,18 +1,18 @@
 ---
 galaxy_info:
-    author: Jim Tarpley (@trippsc2)
-    namespace: trippsc2
-    role_name: dhcp_server
-    description: This role installs and configures DHCP Server role on Windows Server.
-    license: MIT
+  author: Jim Tarpley (@trippsc2)
+  namespace: trippsc2
+  role_name: dhcp_server
+  description: This role installs and configures DHCP Server role on Windows Server.
+  license: MIT
 
-    min_ansible_version: '2.15'
+  min_ansible_version: '2.16'
 
-    platforms:
-      - name: Windows
-        versions:
-          - '2019'
-          - '2022'
+  platforms:
+    - name: Windows
+      versions:
+        - '2019'
+        - '2022'
 
 collections:
   - ansible.windows
