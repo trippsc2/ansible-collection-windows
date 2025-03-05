@@ -13,7 +13,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: wds_boot_image_
+      default_prefix: windows_wds_boot_image_
     groups:
       - windows
       - windows_domain
@@ -22,7 +22,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: wds_boot_image_
+      default_prefix: windows_wds_boot_image_
     groups:
       - subjects
       - windows

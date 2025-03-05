@@ -13,7 +13,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: win_combine_certificates_
+      default_prefix: windows_win_combine_certificates_
     groups:
       - subjects
       - windows

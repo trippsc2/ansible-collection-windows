@@ -13,7 +13,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: win_package_provider_
+      default_prefix: windows_win_package_provider_
     groups:
       - subjects
       - windows

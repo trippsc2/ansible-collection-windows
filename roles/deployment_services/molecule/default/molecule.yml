@@ -13,7 +13,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: deployment_services_
+      default_prefix: windows_deployment_services_
     groups:
       - windows
       - windows_domain
@@ -22,7 +22,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: deployment_services_
+      default_prefix: windows_deployment_services_
     groups:
       - subjects
       - windows

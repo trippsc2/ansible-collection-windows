@@ -13,7 +13,7 @@ platforms:
     memory: 2048
     cpus: 2
     provider_options:
-      default_prefix: install_psgallery_
+      default_prefix: windows_install_psgallery_
     groups:
       - subjects
       - windows
